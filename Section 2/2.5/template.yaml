@@ -1,0 +1,52 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Parameters:
+  NotificationEmail:
+    Type: String
+Resources:
+  VerifyUpdates:
+    Type: 'AWS::Serverless::Function'
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      MemorySize: 128
+      Timeout: 15
+      Policies:
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+          - Effect: Allow
+            Action:
+              - dynamodb:*
+            Resource: !GetAtt SiteContent.Arn
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+          - Effect: Allow
+            Action:
+              - SNS:Publish
+            Resource: !Ref SiteUpdatedTopic
+      Events:
+        CheckWebsiteScheduledEvent:
+          Type: Schedule
+          Properties:
+            Schedule: rate(15 minutes)  # lower bound 1 minute, in alternative cron(...)
+      Environment:
+        Variables:
+           SITES_TABLE: !Ref SiteContent
+           NOTIFICATION_QUEUE: !Ref SiteUpdatedTopic
+
+  SiteContent:
+    Type: AWS::Serverless::SimpleTable   # alternative to AWS::DynamoDB::Table 
+    Properties:
+      PrimaryKey:
+        Name: Site
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+          
+  SiteUpdatedTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      Subscription:
+      - Protocol: email
+        Endpoint: !Ref NotificationEmail

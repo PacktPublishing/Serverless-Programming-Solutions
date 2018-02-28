@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Resources:
+  CopyFile:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs6.10
+      Timeout: 60
+      Policies:
+        - Version: '2012-10-17' # Policy Document
+          Statement:
+          - Effect: Allow
+            Action:
+              - s3:GetObject
+              - s3:PutObject
+            Resource: 'arn:aws:s3:::v24*'
+      Events:
+        NewObjectEvent:
+          Type: S3
+          Properties:
+            Bucket: !Ref SrcBucket
+            Events: s3:ObjectCreated:*
+      Environment:
+        Variables:
+           BACKUP_BUCKET: !Ref DestBucket
+  SrcBucket:
+    Type: AWS::S3::Bucket
+  DestBucket:
+    Type: AWS::S3::Bucket
