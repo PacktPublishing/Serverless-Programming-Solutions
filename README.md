@@ -8,12 +8,12 @@ This is the code repository for [Serverless Programming Solutions [Video]](https
 <H2>What You Will Learn</H2>
 <DIV class=book-info-will-learn-text>
 <UL>
-<LI>Understand how microservices compares with existing architectures 
-<LI>Understand how to create a serverless application in AWS 
-<LI>Learn how to secure access to data and resources&nbsp; 
-<LI>Run tests on your configuration and code 
-<LI>Create a highly available serverless microservice data API 
-<LI>Build, deploy and run your serverless configuration and code </LI></UL></DIV>
+<LI>Set up your development environment to build serverless applications 
+<LI>Approach common web development tasks in a serverless scenario and master the most common serverless architectural patterns 
+<LI>Use the serverless framework to build a complete web application with JavaScript 
+<LI>Apply software development best practices to serverless app development 
+<LI>Monitor, profile, and debug a live distributed application using managed services 
+<LI>Common patterns in serverless solutions </LI></UL></DIV>
 
 ## Instructions and Navigation
 ### Assumed Knowledge
